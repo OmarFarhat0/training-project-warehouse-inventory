@@ -7,6 +7,7 @@ return function (PDO $db): void {
             name VARCHAR(255) NOT NULL,
             sku VARCHAR(100) NOT NULL UNIQUE,
             unit ENUM('piece', 'bag', 'kg', 'liter') NOT NULL,
+            quantity DECIMAL(10, 2) NOT NULL DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )
