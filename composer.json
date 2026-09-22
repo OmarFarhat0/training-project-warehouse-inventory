@@ -1,0 +1,16 @@
+{
+    "name": "omarfarhat0/training-project-warehouse-inventory",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Omarfarhat0\\TrainingProjectWarehouseInventory\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Omar Farhat",
+            "email": "omar.mu.farhat@gmail.com"
+        }
+    ],
+    "require": {}
+}
