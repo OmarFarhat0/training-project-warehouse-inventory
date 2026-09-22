@@ -11,6 +11,11 @@ class Validator {
     public function validate(array $rules): void {
         foreach ($rules as $field => $fieldRules) {
             $value = $this->data[$field] ?? null;
+            $isRequired = in_array('required', $fieldRules, true);
+
+            if (!$isRequired && ($value === null || $value === '')) {
+                continue;
+            }
 
             foreach ($fieldRules as $rule) {
 
@@ -39,6 +44,18 @@ class Validator {
 
                     case 'bool':
                         $this->validateBool($field, $value);
+                        break;
+
+                    case 'integer':
+                        $this->validateInteger($field, $value);
+                        break;
+
+                    case 'numeric':
+                        $this->validateNumeric($field, $value);
+                        break;
+
+                    case 'gt':
+                        $this->validateGreaterThan($field, $value, $parameter);
                         break;
                 }
             }
@@ -82,6 +99,24 @@ class Validator {
                 "The field {$field} must be one of the following values: " . implode(', ', $allowedValues),
                 422
             );
+        }
+    }
+
+    private function validateInteger(string $field, mixed $value): void {
+        if (!is_int($value)) {
+            throw new AppException("The field {$field} must be an integer", 422);
+        }
+    }
+
+    private function validateNumeric(string $field, mixed $value): void {
+        if (!is_int($value) && !is_float($value)) {
+            throw new AppException("The field {$field} must be a number", 422);
+        }
+    }
+
+    private function validateGreaterThan(string $field, mixed $value, ?string $parameter): void {
+        if (!is_numeric($value) || !is_numeric($parameter) || (float) $value <= (float) $parameter) {
+            throw new AppException("The field {$field} must be greater than {$parameter}", 422);
         }
     }
 }
