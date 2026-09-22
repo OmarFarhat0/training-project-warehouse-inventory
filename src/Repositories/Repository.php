@@ -2,10 +2,11 @@
 
 namespace Omarfarhat0\TrainingProjectWarehouseInventory\Repositories;
 
+use Omarfarhat0\TrainingProjectWarehouseInventory\Contracts\RepositoryInterface;
 use Omarfarhat0\TrainingProjectWarehouseInventory\Database\QueryBuilder;
 use PDO;
 
-abstract class Repository {
+abstract class Repository implements RepositoryInterface {
     public function __construct(private PDO $db) {}
 
     abstract protected function table(): string;
@@ -21,6 +22,12 @@ abstract class Repository {
     public function getById(int $id): ?array {
         $items = $this->queryBuilder()->where('id', '=', $id)->get();
         return $items[0] ?? null;
+    }
+
+    public function create(array $attributes): array {
+        $id = $this->queryBuilder()->create($attributes);
+
+        return $this->getById($id);
     }
 
     public function update(int $id, array $attributes): array {
